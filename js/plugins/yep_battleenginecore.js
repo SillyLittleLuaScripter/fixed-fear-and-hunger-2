@@ -1185,10 +1185,14 @@ BattleManager.processForcedAction = function() {
         this._turnForced = true;
         this._subject = this._actionForcedBattler;
         this._actionForcedBattler = null;
+            if (this._actionForcedBattler) {
+        this._turnForced = true;
+        this._subject = this._actionForcedBattler;
+        this._actionForcedBattler = null;
         if (this._subject) { // if user exists
             if (this._subject._hp > 0) { // if user is alive
                 this.startAction();
-                this._subject.removeCurrentAction();
+                this._subject.removeCurrentAction();   // ← line 1191
             }
         }
     }
