@@ -134,15 +134,18 @@
     return Input;
   }
   var fakeInput = {
-    down: function (key) {
-      var I = ensureInput();
-      if (I) I._currentState[key] = true;
-    },
-    up: function (key) {
-      var I = ensureInput();
-      if (I) I._currentState[key] = false;
-    }
-  };
+  down: function (key) {
+    if (typeof Input === "undefined" || !Input._currentState) return;
+    Input._currentState[key] = true;
+    Input._latestButton = key;
+    Input._pressedTime = 0;
+    Input._date = Date.now();
+  },
+  up: function (key) {
+    if (typeof Input === "undefined" || !Input._currentState) return;
+    Input._currentState[key] = false;
+  }
+};
 
   function isTouch() {
     return "ontouchstart" in window || navigator.maxTouchPoints > 0 ||
