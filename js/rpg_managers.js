@@ -418,7 +418,7 @@ DataManager.selectSavefileForNewGame = function() {
 
 DataManager.makeSavefileInfo = function() {
     var info = {};
-    info.globalId   = this._globalId;
+    info.globalId   = DataManager._globalId;
     info.title      = $dataSystem.gameTitle;
     info.characters = $gameParty.charactersForSavefile();
     info.faces      = $gameParty.facesForSavefile();
