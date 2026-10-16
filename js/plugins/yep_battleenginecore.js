@@ -1175,34 +1175,7 @@ Yanfly.BEC.version = 1.52;
  * - Skills and items that affect both HP and MP will now show popups for both.
  *
  * Version 1.00:
- * - Finished plugin!
- */
-//=============================================================================
-//=============================================================================
-// Fix: null subject removeCurrentAction (clean)
-//=============================================================================
-
-BattleManager.processForcedAction = function() {
-    if (this._actionForcedBattler) {
-        this._turnForced = true;
-        this._subject = this._actionForcedBattler;
-        this._actionForcedBattler = null;
-        if (this._subject && this._subject.hp > 0) {
-            this.startAction();
-            if (this._subject && typeof this._subject.removeCurrentAction === 'function') {
-                this._subject.removeCurrentAction();
-            }
-        } else {
-            this._subject = null;
-        }
-    }
-};
-
-Game_Battler.prototype.removeCurrentAction = function() {
-    if (this._actions && this._actions.length > 0) {
-        this._actions.shift();
-    }
-};
+ * - Finished
 
 
 //=============================================================================
