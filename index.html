@@ -228,6 +228,42 @@
   }, { passive: false });
   document.body.appendChild(fs);
 })();
+(function () {
+  function unlockAudio() {
+    try {
+      // RPG Maker WebAudio
+      if (window.WebAudio && WebAudio._context) {
+        if (WebAudio._context.state === "suspended") {
+          WebAudio._context.resume();
+        }
+      }
+      // Standard AudioContext
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) {
+        var ctx = (window.WebAudio && WebAudio._context) || window.__unlockCtx;
+        if (!ctx) {
+          window.__unlockCtx = new Ctx();
+          ctx = window.__unlockCtx;
+        }
+        if (ctx.state === "suspended") ctx.resume();
+      }
+      // Quiet beep so iOS fully unlocks
+      if (window.WebAudio && WebAudio._context) {
+        var ctx2 = WebAudio._context;
+        var buf = ctx2.createBuffer(1, 1, 22050);
+        var src = ctx2.createBufferSource();
+        src.buffer = buf;
+        src.connect(ctx2.destination);
+        src.start(0);
+      }
+    } catch (e) {}
+    document.removeEventListener("touchstart", unlockAudio, true);
+    document.removeEventListener("click", unlockAudio, true);
+  }
+  document.addEventListener("touchstart", unlockAudio, true);
+  document.addEventListener("click", unlockAudio, true);
+})();
+    
 </script>
     </body>
 </html>
