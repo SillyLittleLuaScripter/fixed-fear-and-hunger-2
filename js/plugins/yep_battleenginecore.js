@@ -1178,30 +1178,28 @@ Yanfly.BEC.version = 1.52;
  * - Finished plugin!
  */
 //=============================================================================
-// Added by Toby Yasha in regards to the 'removeCurrentAction' of null Bug
+//=============================================================================
+// Fix: null subject removeCurrentAction (clean)
+//=============================================================================
 
 BattleManager.processForcedAction = function() {
     if (this._actionForcedBattler) {
         this._turnForced = true;
         this._subject = this._actionForcedBattler;
         this._actionForcedBattler = null;
-            if (this._actionForcedBattler) {
-        this._turnForced = true;
-        this._subject = this._actionForcedBattler;
-        this._actionForcedBattler = null;
-        if (this._subject) { // if user exists
-            if (this._subject._hp > 0) { // if user is alive
-                this.startAction();
-                this._subject.removeCurrentAction();   // ← line 1191
+        if (this._subject && this._subject.hp > 0) {
+            this.startAction();
+            if (this._subject && typeof this._subject.removeCurrentAction === 'function') {
+                this._subject.removeCurrentAction();
             }
+        } else {
+            this._subject = null;
         }
     }
 };
 
-
-// Make sure user is still alive, although if user doesn't exist this won't do anything
 Game_Battler.prototype.removeCurrentAction = function() {
-    if (this._hp > 0 && this._actions.length > 0) {
+    if (this._actions && this._actions.length > 0) {
         this._actions.shift();
     }
 };
